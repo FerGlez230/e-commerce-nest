@@ -5,7 +5,8 @@ import { fileFilter, fileNamer } from './helpers';
 import { diskStorage } from 'multer';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
-
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+@ApiTags('Files')
 @Controller('files')
 export class FilesController {
   private hostname;
@@ -31,6 +32,10 @@ export class FilesController {
       filename: fileNamer
     }),
   }))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Images',
+  })
   uploadProductFile(@UploadedFile() file: Express.Multer.File){
     if( !file ){
       throw new BadRequestException('File is required and should be an image');

@@ -7,16 +7,19 @@ import { RawHeaders, GetUser, Roles } from './decorators';
 import { UserRoleGuard } from './guards/user-role.guard';
 import { ValidRoles } from './enums/valid-roles';
 import { Auth } from './decorators';
-
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
+  @ApiResponse({status: 200, description: 'User added', type: User})
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
   @Post('login')
+  @ApiResponse({status: 200, description: 'User logged in'})
   loginUser(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
